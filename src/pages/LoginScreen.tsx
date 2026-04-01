@@ -12,6 +12,15 @@ const petals = [
   { emoji: "🌸", x: 5, y: 72, dur: 8 },
   { emoji: "🪷", x: 45, y: 90, dur: 6.5 },
   { emoji: "🌺", x: 92, y: 45, dur: 7 },
+  { emoji: "🌸", x: 25, y: 25, dur: 6.2 },
+  { emoji: "🪷", x: 75, y: 40, dur: 7.1 },
+  { emoji: "🌺", x: 15, y: 85, dur: 5.8 },
+  { emoji: "🌸", x: 55, y: 15, dur: 6.8 },
+  { emoji: "🪷", x: 35, y: 65, dur: 7.3 },
+  { emoji: "🌺", x: 82, y: 85, dur: 6.1 },
+  { emoji: "🌸", x: 18, y: 45, dur: 7.8 },
+  { emoji: "🪷", x: 62, y: 48, dur: 5.9 },
+  { emoji: "🌺", x: 40, y: 22, dur: 8.2 },
 ];
 
 interface LoginScreenProps {
@@ -119,7 +128,7 @@ export const LoginScreen = ({ onSuccess }: LoginScreenProps) => {
 
       {/* ── Main Card ───────────────────────────────────────────────────── */}
       <motion.div
-        initial={{ opacity: 0, y: 48, scale: 0.94 }}
+        initial={{ opacity: 1, y: 48, scale: 0.94 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: "spring", stiffness: 120, damping: 18, delay: 0.1 }}
         className="relative z-10 w-full max-w-sm"
@@ -127,10 +136,11 @@ export const LoginScreen = ({ onSuccess }: LoginScreenProps) => {
         <motion.div
           animate={shake ? { x: [-10, 10, -8, 8, -4, 4, 0] } : { x: 0 }}
           transition={{ duration: 0.55, ease: "easeInOut" }}
-          className="relative overflow-hidden rounded-3xl px-8 py-7 flex flex-col items-center gap-5 backdrop-blur-2xl bg-white/20"
+          className="relative overflow-hidden rounded-[2.5rem] px-8 py-9 flex flex-col items-center gap-7 backdrop-blur-3xl"
           style={{
-            border: "0.5px solid rgba(255, 105, 180, 0.4)",
-            boxShadow: "0 8px 32px rgba(255, 20, 147, 0.15), inset 0 1px 0 rgba(255,255,255,0.55)",
+            background: "linear-gradient(145deg, rgba(255, 230, 240, 0.96) 0%, rgba(255, 192, 203, 0.96) 50%, rgba(255, 182, 193, 0.90) 100%)",
+            border: "1.5px solid rgba(255, 105, 180, 0.4)",
+            boxShadow: "0 24px 64px rgba(255, 20, 147, 0.2), inset 0 1px 0 rgba(255,255,255,0.8)",
           }}
         >
           {/* Inner shimmer overlay */}
@@ -148,11 +158,11 @@ export const LoginScreen = ({ onSuccess }: LoginScreenProps) => {
             transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut" }}
             className="relative z-10 rounded-full px-14 py-4 flex items-center justify-center overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, rgba(255, 20, 147, 0.45) 0%, rgba(255, 105, 180, 0.25) 100%)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              border: "1px solid rgba(255, 255, 255, 0.3)",
-              boxShadow: "0 10px 40px rgba(255, 20, 147, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.2)",
+              background: "linear-gradient(135deg, rgba(255, 20, 147, 0.8) 0%, rgba(255, 105, 180, 0.55) 100%)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1.5px solid rgba(255, 255, 255, 0.5)",
+              boxShadow: "0 12px 48px rgba(255, 20, 147, 0.45), inset 0 0 15px rgba(255, 255, 255, 0.35)",
             }}
           >
             <img
@@ -192,9 +202,9 @@ export const LoginScreen = ({ onSuccess }: LoginScreenProps) => {
             <div
               className="flex items-center gap-2 rounded-xl px-4 py-3 transition-all"
               style={{
-                background: "rgba(255,255,255,0.55)",
-                border: "1px solid rgba(255, 105, 180, 0.4)",
-                boxShadow: "0 2px 8px rgba(255, 20, 147, 0.08)",
+                background: "rgba(255, 255, 255, 0.45)",
+                border: "1px solid rgba(255, 105, 180, 0.25)",
+                boxShadow: "0 2px 10px rgba(255, 20, 147, 0.05), inset 0 0 8px rgba(255,255,255,0.8)",
               }}
             >
               {/* Phone icon */}

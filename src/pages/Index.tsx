@@ -4,6 +4,7 @@ import clayPot from "@/assets/clay-pot.png";
 import potWin from "@/assets/pot-broken-win.png";
 import potEmpty from "@/assets/pot-broken-empty.png";
 import luvEsenceLogo from "@/assets/luvesence-logo.png";
+import gameBg from "@/assets/game-bg.jpg";
 
 const TOTAL_POTS = 5;
 const MAX_PICKS_PER_TRY = 2;
@@ -64,8 +65,11 @@ const CursorBat = ({ isSwinging, isMobile, forceX, forceY }: { isSwinging: boole
     >
       <motion.div
         className="origin-bottom-left"
-        initial={{ rotate: 15 }}
-        animate={{ rotate: isSwinging ? 90 : 15 }} // 75-degree arc
+        initial={{ rotate: 15, scale: isMobile ? 0.65 : 1 }}
+        animate={{ 
+          rotate: isSwinging ? 90 : 15, 
+          scale: isMobile ? 0.65 : 1 
+        }} // 75-degree arc
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
         style={{ x: "-30%", y: "-90%" }}
       >
@@ -170,9 +174,9 @@ const VictoryPot = () => {
           <Sparkle key={`sp-${i}`} index={i} />
         ))}
       </div>
-      <motion.img 
-        src={potWin} 
-        alt="Victory Pot" 
+      <motion.img
+        src={potWin}
+        alt="Victory Pot"
         className="h-[200px] w-[200px] sm:h-44 sm:w-44 object-contain scale-[0.75] sm:scale-75 drop-shadow-[0_0_50px_rgba(255,105,180,0.8)] relative z-10 flex-shrink-0"
         style={{ x: 15, y: 10 }} // Offset fine-tuned to align perfectly with the rope
         initial={{ filter: "brightness(1) saturate(1)" }}
@@ -295,7 +299,8 @@ const Index = ({ phone }: IndexProps) => {
             body: JSON.stringify({ action: "win", phone, code: assignedCode }),
           }).finally(() => {
             const elapsedTime = Date.now() - winStartTime;
-            const remainingDelay = Math.max(0, 1000 - elapsedTime);
+            const targetDelay = isMobile ? 300 : 1000;
+            const remainingDelay = Math.max(0, targetDelay - elapsedTime);
 
             setTimeout(() => {
               setDiscountCode(assignedCode);
@@ -339,9 +344,18 @@ const Index = ({ phone }: IndexProps) => {
       <motion.div
         className="relative flex min-h-screen flex-col items-center justify-center gap-10 overflow-hidden p-6 transition-colors duration-700"
         style={{
-          background: "linear-gradient(135deg, #FFB6C8 0%, #FFE8F0 35%, #FFF0F5 65%, #FFB6C8 100%)",
+          background: "transparent",
         }}
       >
+        <div
+          className="fixed inset-0 pointer-events-none z-[-1]"
+          style={{
+            backgroundImage: `url(${gameBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="absolute inset-0 pointer-events-none bg-pink-100/30 z-[-1]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_30%,rgba(255,20,147,0.12)_100%)] mix-blend-multiply" />
         <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(rgba(255,105,180,0.5) 1px, transparent 1px)', backgroundSize: '36px 36px' }} />
 
@@ -378,7 +392,7 @@ const Index = ({ phone }: IndexProps) => {
                 කණාමුට්ටිය
               </span>
               <span className="text-[10px] font-bold tracking-[0.35em] text-[#db2777] uppercase mt-0.5">
-                ✦ Avurudu Challenge ✦
+                Avurudu Challenge
               </span>
             </div>
           </div>
@@ -400,7 +414,7 @@ const Index = ({ phone }: IndexProps) => {
                 Tap to Strike ✦
               </motion.div>
             )}
-            <div className="rounded-full border border-[#FF1493]/20 bg-white/10 px-8 py-2.5 text-sm font-bold backdrop-blur-2xl shadow-[0_4px_16px_rgba(255,20,147,0.1)] text-black/70">
+            <div className="rounded-full border border-[#FF1493]/30 bg-white/50 px-8 py-2.5 text-sm font-bold backdrop-blur-2xl shadow-[0_4px_24px_rgba(255,20,147,0.25)] text-black">
               Try <span className="text-[#FF1493] px-1 text-base">{currentTry}</span> of {MAX_TRIES}
             </div>
           </motion.div>
@@ -460,7 +474,11 @@ const Index = ({ phone }: IndexProps) => {
                         }}
                       />
 
-                      <div className="translate-y-[10px] sm:translate-y-0">
+                      <div className={`
+                        ${isLoss ? 'translate-y-[20px] sm:translate-y-[10px]' : 
+                          (isWin || isVictoryPot) ? 'translate-x-[5px] translate-y-[23px] sm:translate-x-[8px] sm:translate-y-[12px]' : 
+                          'translate-y-[15px] sm:translate-y-0'}
+                      `}>
                         {isRevealed && !isWin && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                             {Array.from({ length: 12 }).map((_, idx) => (
