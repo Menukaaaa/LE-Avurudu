@@ -88,7 +88,7 @@ export const LoginScreen = ({ onSuccess }: LoginScreenProps) => {
 
   return (
     <motion.div
-      className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden p-4"
+      className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden p-4"
       style={{
         background: "linear-gradient(135deg, #FFD1DC 0%, #FFF8F0 40%, #FFF8F0 70%, #FFD1DC 100%)",
       }}
