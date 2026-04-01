@@ -66,9 +66,9 @@ const CursorBat = ({ isSwinging, isMobile, forceX, forceY }: { isSwinging: boole
       <motion.div
         className="origin-bottom-left"
         initial={{ rotate: 15, scale: isMobile ? 0.65 : 1 }}
-        animate={{ 
-          rotate: isSwinging ? 90 : 15, 
-          scale: isMobile ? 0.65 : 1 
+        animate={{
+          rotate: isSwinging ? 90 : 15,
+          scale: isMobile ? 0.65 : 1
         }} // 75-degree arc
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
         style={{ x: "-30%", y: "-90%" }}
@@ -269,12 +269,19 @@ const Index = ({ phone }: IndexProps) => {
       setIsSwinging(true);
       setTimeout(() => setIsSwinging(false), 200);
 
+      const impactDelay = isMobile ? 80 : 120;
+
       // Impact Timing
       setTimeout(() => {
+        // Prioritize reveal state for instant visual feedback
+        setRevealedPots((prev) => {
+          const next = new Set(prev);
+          next.add(index);
+          return next;
+        });
 
         const nextPicks = picksThisTry + 1;
         setPicksThisTry(nextPicks);
-        setRevealedPots((prev) => new Set(prev).add(index));
 
         if (index === winningPot) {
           setApiLoading(true);
@@ -289,7 +296,7 @@ const Index = ({ phone }: IndexProps) => {
           setWinRevealIndex(index);
           setShowConfetti(true);
 
-          // Force a minimum 1s delay for celebratory feel before showing the modal
+          // Force a minimum base delay for celebratory feel before showing the modal
           const winStartTime = Date.now();
 
           fetch(API_URL, {
@@ -315,7 +322,7 @@ const Index = ({ phone }: IndexProps) => {
             setTimeout(() => setPendingNextTry(true), 1200);
           }
         }
-      }, 120);
+      }, impactDelay);
     },
     [revealedPots, showModal, pendingNextTry, apiLoading, isSwinging, picksThisTry, winningPot, safePhoneNum, discountCodesList, phone, currentTry]
   );
@@ -432,9 +439,9 @@ const Index = ({ phone }: IndexProps) => {
               <motion.div
                 key={`${currentTry}-${i}`}
                 className="relative basis-[18%] sm:basis-[16%]"
-                initial={{ opacity: 0, y: 70, scale: 0.8 }}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.08 }}
                 style={{ willChange: "transform, opacity" }}
               >
                 <div
@@ -475,9 +482,9 @@ const Index = ({ phone }: IndexProps) => {
                       />
 
                       <div className={`
-                        ${isLoss ? 'translate-y-[20px] sm:translate-y-[10px]' : 
-                          (isWin || isVictoryPot) ? 'translate-x-[5px] translate-y-[23px] sm:translate-x-[8px] sm:translate-y-[12px]' : 
-                          'translate-y-[15px] sm:translate-y-0'}
+                        ${isLoss ? 'translate-y-[20px] sm:translate-y-[10px]' :
+                          (isWin || isVictoryPot) ? 'translate-x-[5px] translate-y-[23px] sm:translate-x-[8px] sm:translate-y-[12px]' :
+                            'translate-y-[15px] sm:translate-y-0'}
                       `}>
                         {isRevealed && !isWin && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
@@ -581,16 +588,29 @@ const Index = ({ phone }: IndexProps) => {
                   VICTORY!
                 </p>
 
-                <div className="w-full rounded-2xl p-4 sm:p-5" style={{ background: "rgba(255,20,147,0.07)", border: "1px solid rgba(255,105,180,0.25)" }}>
-                  <p className="text-sm font-bold text-[#be185d] leading-relaxed">
-                    Your discount code has been sent to {phone} via SMS!
-                  </p>
-                  {discountCode && (
-                    <div className="mt-3 rounded-xl p-3 text-center" style={{ background: "linear-gradient(135deg, #FF1493, #FF69B4)", boxShadow: "0 4px 16px rgba(255,20,147,0.35)" }}>
-                      <p className="text-[10px] font-bold text-white/80 mb-1 tracking-widest uppercase">Your Code</p>
-                      <p className="text-xl font-black text-white tracking-wider drop-shadow">{discountCode}</p>
-                    </div>
-                  )}
+                <div className="w-full rounded-[2rem] overflow-hidden border-2 border-[#FF1493]/30" style={{ background: "rgba(255, 220, 240, 0.98)", backdropFilter: "blur(20px)", boxShadow: "0 24px 64px rgba(255, 20, 147, 0.35)" }}>
+                  {/* Header Section */}
+                  <div className="w-full bg-gradient-to-r from-pink-100/40 via-pink-100/60 to-pink-100/40 border-b border-pink-100/80 py-3 px-4 text-center">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#FF1493]">
+                      You've won a 15% discount
+                    </p>
+                  </div>
+
+                  {/* Content Body */}
+                  <div className="w-full p-5 sm:p-6 flex flex-col items-center">
+                    {discountCode && (
+                      <div className="w-full rounded-2xl p-4 text-center mb-4 transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #FF1493 0%, #FF69B4 100%)", boxShadow: "0 8px 32px rgba(255,20,147,0.25)" }}>
+                        <p className="text-[9px] font-bold text-white/70 mb-0.5 tracking-widest uppercase">Redeem Code</p>
+                        <p className="text-lg sm:text-xl font-black text-white tracking-wide drop-shadow-sm break-all">{discountCode}</p>
+                      </div>
+                    )}
+
+                    <div className="h-px w-1/2 bg-gradient-to-r from-transparent via-pink-200/50 to-transparent mb-4" />
+
+                    <p className="text-[10px] font-bold text-[#be185d]/70 leading-relaxed text-center px-4">
+                      Sent to <span className="text-[#FF1493] font-black">{phone}</span> via SMS!
+                    </p>
+                  </div>
                 </div>
 
                 <p className="text-xl sm:text-2xl font-black" style={{ background: "linear-gradient(90deg, #FF1493 0%, #db2777 50%, #FF69B4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
