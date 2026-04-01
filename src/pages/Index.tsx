@@ -296,25 +296,21 @@ const Index = ({ phone }: IndexProps) => {
           setWinRevealIndex(index);
           setShowConfetti(true);
 
-          // Force a minimum base delay for celebratory feel before showing the modal
-          const winStartTime = Date.now();
+          // Force immediate celebration regardless of server latency
+          const targetDelay = isMobile ? 300 : 400;
+          setTimeout(() => {
+            setDiscountCode(assignedCode);
+            setApiLoading(false);
+            setWon(true);
+          }, targetDelay);
 
+          // Log the win in the background
           fetch(API_URL, {
             method: "POST",
             mode: "cors",
             redirect: "follow",
             body: JSON.stringify({ action: "win", phone, code: assignedCode }),
-          }).finally(() => {
-            const elapsedTime = Date.now() - winStartTime;
-            const targetDelay = isMobile ? 300 : 1000;
-            const remainingDelay = Math.max(0, targetDelay - elapsedTime);
-
-            setTimeout(() => {
-              setDiscountCode(assignedCode);
-              setApiLoading(false);
-              setWon(true);
-            }, remainingDelay);
-          });
+          }).catch(err => console.error("Win log failed in background:", err));
         } else if (nextPicks >= MAX_PICKS_PER_TRY) {
           if (currentTry >= MAX_TRIES) {
             setTimeout(() => setWon(false), 900);
