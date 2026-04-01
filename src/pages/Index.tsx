@@ -616,7 +616,7 @@ const Index = ({ phone }: IndexProps) => {
                 <p className="text-xl sm:text-2xl font-black" style={{ background: "linear-gradient(90deg, #FF1493 0%, #db2777 50%, #FF69B4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                   සුභ අලුත් අවුරුද්දක් වේවා!
                 </p>
-                <a href="/" className="text-[10px] uppercase font-black tracking-[0.2em] text-[#db2777]/60 border-b border-[#db2777]/30 pb-0.5 hover:text-[#FF1493] hover:border-[#FF1493] transition-colors">
+                <a href="https://luvesence.com/" className="text-[10px] uppercase font-black tracking-[0.2em] text-[#db2777]/60 border-b border-[#db2777]/30 pb-0.5 hover:text-[#FF1493] hover:border-[#FF1493] transition-colors">
                   Return to Website →
                 </a>
               </motion.div>
@@ -652,7 +652,7 @@ const Index = ({ phone }: IndexProps) => {
                 <p className="text-xl sm:text-2xl font-black" style={{ background: "linear-gradient(90deg, #FF1493 0%, #db2777 50%, #FF69B4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                   සුභ අලුත් අවුරුද්දක් වේවා!
                 </p>
-                <a href="/" className="text-[10px] uppercase font-black tracking-[0.2em] text-[#db2777]/60 border-b border-[#db2777]/30 pb-0.5 hover:text-[#FF1493] hover:border-[#FF1493] transition-colors">
+                <a href="https://luvesence.com/" className="text-[10px] uppercase font-black tracking-[0.2em] text-[#db2777]/60 border-b border-[#db2777]/30 pb-0.5 hover:text-[#FF1493] hover:border-[#FF1493] transition-colors">
                   Return to Website →
                 </a>
               </motion.div>
